@@ -1,0 +1,8 @@
+flake8>=2.1.0
+mock>=1.0.1
+pytest-django==2.7.0
+pytest-mock==0.4.0
+pytest-pythonpath==0.3
+pytest==2.6.4
+six==1.8.0
+tox>=1.8.0

@@ -1,0 +1,6 @@
+include AUTHORS.rst
+include CONTRIBUTING.md
+include LICENSE
+include README.rst
+include requirements.txt
+recursive-include fallback_storage *.html *.png *.gif *js *.css *jpg *jpeg *svg *py
