@@ -31,9 +31,4 @@ test-all:
 	tox
 
 release: clean
-	python setup.py sdist upload
-	python setup.py bdist_wheel upload
-
-sdist: clean
-	python setup.py sdist
-	ls -l dist
+	python setup.py sdist bdist_wheel upload
