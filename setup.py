@@ -1,8 +1,5 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
-
-from pip.req import parse_requirements
-
 import fallback_storage
 
 try:
@@ -14,8 +11,6 @@ version = fallback_storage.__version__
 
 readme = open('README.rst').read()
 
-requirements = [str(req.req) for req in parse_requirements('requirements.txt')]
-
 setup(
     name='django-fallback-storage',
     version=version,
@@ -23,12 +18,14 @@ setup(
     long_description=readme,
     author='Piper Merriam',
     author_email='pipermerriam@gmail.com',
-    url='https://github.com/simpleenergy/django-fallback-storage',
+    url='https://github.com/pipermerriam/django-fallback-storage',
     packages=[
         'fallback_storage',
     ],
     include_package_data=True,
-    install_requires=requirements,
+    install_requires=[
+        "Django>=1.6,<1.12",
+    ],
     license="MIT",
     zip_safe=False,
     keywords='django-fallback-storage',
