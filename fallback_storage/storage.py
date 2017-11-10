@@ -97,11 +97,11 @@ class FallbackStorage(Storage):
             # variable 'name' before running the loop again with the new potential name.
             if len(potential_names) > 1:
                 potential_names.remove(name)
-                name = potential_names[0]
+                name = next(iter(potential_names))
                 continue
 
             if len(potential_names) == 1:
-                available_name = potential_names[0]
+                available_name = next(iter(potential_names))
             elif exceptions:
                 if len(exceptions) == 1:
                     raise exceptions[0]
