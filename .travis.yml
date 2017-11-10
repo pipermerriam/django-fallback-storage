@@ -1,24 +1,61 @@
 language: python
 python:
-  - "2.7"
-env:
-  global:
-    - PIP_DOWNLOAD_CACHE=$HOME/.pip_cache
-  matrix:
-    - TOX_ENV=py26-dj16,
-    - TOX_ENV=py27-dj16,
-    - TOX_ENV=py27-dj17,
-    - TOX_ENV=py33-dj16,
-    - TOX_ENV=py33-dj17,
-    - TOX_ENV=py34-dj17,
-    - TOX_ENV=flake8
+  - "3.5"
+cache:
+  - pip: true
+matrix:
+  include:
+    # go-ethereum
+    - python: "2.6"
+      env: TOX_POSARGS="-e py26-dj16"
+    - python: "2.7"
+      env: TOX_POSARGS="-e py27-dj16"
+    - python: "2.7"
+      env: TOX_POSARGS="-e py27-dj17"
+    - python: "2.7"
+      env: TOX_POSARGS="-e py27-dj18"
+    - python: "2.7"
+      env: TOX_POSARGS="-e py27-dj19"
+    - python: "2.7"
+      env: TOX_POSARGS="-e py27-dj110"
+    - python: "2.7"
+      env: TOX_POSARGS="-e py27-dj111"
+    - python: "3.3"
+      env: TOX_POSARGS="-e py33-dj16"
+    - python: "3.3"
+      env: TOX_POSARGS="-e py33-dj17"
+    - python: "3.3"
+      env: TOX_POSARGS="-e py33-dj18"
+    - python: "3.4"
+      env: TOX_POSARGS="-e py34-dj17"
+    - python: "3.4"
+      env: TOX_POSARGS="-e py34-dj18"
+    - python: "3.4"
+      env: TOX_POSARGS="-e py34-dj19"
+    - python: "3.4"
+      env: TOX_POSARGS="-e py34-dj110"
+    - python: "3.4"
+      env: TOX_POSARGS="-e py34-dj111"
+    - python: "3.5"
+      env: TOX_POSARGS="-e py34-dj17"
+    - python: "3.5"
+      env: TOX_POSARGS="-e py34-dj18"
+    - python: "3.5"
+      env: TOX_POSARGS="-e py34-dj19"
+    - python: "3.5"
+      env: TOX_POSARGS="-e py34-dj110"
+    - python: "3.5"
+      env: TOX_POSARGS="-e py34-dj111"
+    - python: "3.5"
+      env: TOX_POSARGS="-e flake8"
 cache:
   directories:
     - $HOME/.pip-cache/
 install:
-  - "travis_retry pip install setuptools --upgrade"
-  - "travis_retry pip install tox"
+  - travis_retry pip install setuptools --upgrade
+  - travis_retry pip install tox
+before_script:
+  - python --version
+  - pip --version
 script:
-  - tox -e $TOX_ENV
-after_script:
-  - cat .tox/$TOX_ENV/log/*.log
+  - tox $TOX_POSARGS

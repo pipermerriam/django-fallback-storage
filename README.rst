@@ -1,6 +1,6 @@
-=============================
+=======================
 django-fallback-storage
-=============================
+=======================
 
 .. image:: https://badge.fury.io/py/django-fallback-storage.png
     :target: https://badge.fury.io/py/django-fallback-storage
@@ -105,3 +105,9 @@ The following methods behave somewhat specially.
   When computing a url, FallbackStorage first checks if the file exists.  If
   the file exists in none of the storage backends, the last backend is used to
   compute the file name.
+
+* **FallbackStorage.get_available_name(name)**::
+
+  When django attempts to get an available name for the file, FallbackStorage
+  checks the file name across all storage backends before returning an available
+  name. As such, each file will have a unique name across all storage backends in use.

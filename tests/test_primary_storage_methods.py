@@ -177,3 +177,25 @@ def test_fallback_url_for_missing_file(inmemorystorage, filesystemstorage):
     backend = get_storage_class()()
 
     assert backend.url('foo.txt') == '/media/foo.txt'
+
+
+def test_fallback_get_available_name_for_unique_file(inmemorystorage, filesystemstorage):
+    # sanity check
+    assert not inmemorystorage.exists('foo.txt')
+    assert not filesystemstorage.exists('foo.txt')
+
+    backend = get_storage_class()()
+
+    assert backend.get_available_name('foo.txt') == 'foo.txt'
+
+
+def test_fallback_get_available_name_for_duplicate_file(inmemorystorage, filesystemstorage):
+    inmemorystorage.save('foo.txt', StringIO('test-foo'))
+
+    # sanity check
+    assert inmemorystorage.exists('foo.txt')
+    assert not filesystemstorage.exists('foo.txt')
+
+    backend = get_storage_class()()
+
+    assert backend.get_available_name('foo.txt') != 'foo.txt'
