@@ -73,8 +73,43 @@ class FallbackStorage(Storage):
 
     # Public API Methods
     get_valid_name = fallback_method('get_valid_name')
-    get_available_name = fallback_method('get_available_name')
     path = fallback_method('path')
+
+    def get_available_name(self, name, **kwargs):
+        available_name = None
+
+        while not available_name:
+            potential_names = set()
+            exceptions = {}
+
+            for backend_class, backend_method in self.get_backend_methods('get_available_name'):
+                # First we add each potential name from the storage backends to the
+                # potential_names set.
+                try:
+                    potential_names.add(backend_method(name, **kwargs))
+                except Exception as e:
+                    exceptions[backend_class] = e
+                    continue
+
+            # If we have more than 1 potential name we know that one of the storage backends
+            # in use has a file with the specified name 'name'. As such, we're going to remove
+            # the current 'name' value from the set, and assign the next potential name to the
+            # variable 'name' before running the loop again with the new potential name.
+            if len(potential_names) > 1:
+                potential_names.remove(name)
+                name = potential_names[0]
+                continue
+
+            if len(potential_names) == 1:
+                available_name = potential_names[0]
+            elif exceptions:
+                if len(exceptions) == 1:
+                    raise exceptions[0]
+                raise Exception(concatenate_exceptions(exceptions))
+            else:
+                raise AttributeError("No backend found with the method `get_available_name`")
+
+        return available_name
 
     def exists(self, *args, **kwargs):
         exceptions = {}
