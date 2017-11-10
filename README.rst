@@ -1,6 +1,6 @@
-=============================
+=======================
 django-fallback-storage
-=============================
+=======================
 
 .. image:: https://badge.fury.io/py/django-fallback-storage.png
     :target: https://badge.fury.io/py/django-fallback-storage
