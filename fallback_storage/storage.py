@@ -96,7 +96,15 @@ class FallbackStorage(Storage):
             # the current 'name' value from the set, and assign the next potential name to the
             # variable 'name' before running the loop again with the new potential name.
             if len(potential_names) > 1:
-                potential_names.remove(name)
+                # In some edge cases it is possible that both backends have files with duplicate
+                # names. This is most likely to have happened when an older version of django
+                # fallback storages was updated to a newer version. In this instance the initial
+                # name passed to the method will not exist in the potential_names set. Therefore,
+                # attempting to remove it will cause a KeyError to be raised and the method will
+                # fail. Check that the original name is in the set before trying to remove it.
+                if name in potential_names:
+                    potential_names.remove(name)
+
                 name = next(iter(potential_names))
                 continue
 

@@ -199,3 +199,16 @@ def test_fallback_get_available_name_for_duplicate_file(inmemorystorage, filesys
     backend = get_storage_class()()
 
     assert backend.get_available_name('foo.txt') != 'foo.txt'
+
+
+def test_fallback_get_available_name_for_duplicate_file_names(inmemorystorage, filesystemstorage):
+    inmemorystorage.save('foo.txt', StringIO('test-foo'))
+    filesystemstorage.save('foo.txt', StringIO('test-foo'))
+
+    # sanity check
+    assert inmemorystorage.exists('foo.txt')
+    assert filesystemstorage.exists('foo.txt')
+
+    backend = get_storage_class()()
+
+    assert backend.get_available_name('foo.txt') != 'foo.txt'
